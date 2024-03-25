@@ -21,7 +21,6 @@ const createUser = async (req, res, next) => {
 };
   
 // Update a user
-  
 const updateUser = async (req, res, next) => {
     const user = {
         lastname: req.body.lastname,
@@ -43,7 +42,7 @@ const updateUser = async (req, res, next) => {
 
 // Delete a user
 const deleteUser = async (req, res, next) => {
-    const accountId = Number(req.params.id);
+    const accountId = Number(req.body.idUser);
 
     if (isNaN(accountId)) {
         return res
@@ -53,7 +52,7 @@ const deleteUser = async (req, res, next) => {
 
     try {
         const [results, fields] = await database.query(
-        "DELETE FROM users WHERE accountId = $1",
+        "DELETE FROM users WHERE user_id = $1",
         [accountId]
         );
         res.json(results);
@@ -84,11 +83,24 @@ const loginUser = async (req, res, next) => {
     }
 };
 
+const getAllUser = async (req, res, next) => {
+    try {
+        const results = await database.query(
+            "SELECT * FROM users"
+        );
+        res.json(results.rows);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error.message)
+    }
+};
+
 
 
 module.exports = {
     createUser,
     updateUser,
     deleteUser,
-    loginUser
+    loginUser,
+    getAllUser
 };  

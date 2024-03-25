@@ -40,7 +40,7 @@ const linkBottleUser = async (req, res, next) => {
             [user.idUser, user.idBottle] 
         );
 
-        if (resultLinkExist.length == 0) {
+        if (resultLinkExist.rows.length == 0) {
             try {
                 const results = await database.query(
                     "INSERT INTO bottle_size_user (bottle_size_id, user_id) VALUES ($1, $2);",

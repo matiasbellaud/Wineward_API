@@ -37,10 +37,10 @@ const linkDesignationUser = async (req, res, next) => {
     try {
         const resultLinkExist = await database.query(
             "SELECT * FROM designation_user WHERE user_id = $1 AND designation_id = $2 ",
-            [user.idUser, user.idDesignation] 
+            [link.idUser, link.idDesignation] 
         );
 
-        if (resultLinkExist.length == 0) {
+        if (resultLinkExist.rows.length == 0) {
             try {
                 const results = await database.query(
                     "INSERT INTO designation_user (designation_id, user_id) VALUES ($1, $2);",
@@ -54,7 +54,7 @@ const linkDesignationUser = async (req, res, next) => {
 
         } else {
             try {
-                const [results, fields] = await database.query(
+                const results = await database.query(
                 "DELETE FROM designation_user WHERE user_id = $1 AND designation_id = $2",
                 [link.idUser, link.idDesignation]
                 );

@@ -42,7 +42,7 @@ const insertBottleSize = async (req, res, next) => {
 const insertDesignation = async (req, res, next) => {
     try {
         const results = await database.query(
-            "INSERT INTO wine_designation (name) VALUES ('Muscadet');" 
+            "INSERT INTO wine_designation (designation_name) VALUES ('Muscadet');" 
         );
         res.json(results);
     } catch (error) {
