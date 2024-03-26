@@ -55,7 +55,7 @@ const deleteUser = async (req, res, next) => {
         "DELETE FROM users WHERE user_id = $1",
         [accountId]
         );
-        res.json(results);
+        res.status(200).json(results);
     } catch (error) {
         console.error(error);
         res.status(500).send(error);
@@ -68,14 +68,14 @@ const loginUser = async (req, res, next) => {
         password: req.body.password,
     };
     try {
-        const [results, fields] = await database.query(
+        const results = await database.query(
         "SELECT user_id FROM users  WHERE email=$1 AND password=$2;",
         [user.email, user.password]
         );
-        if (results.length == 0) {
-        res.send("no account at this identifiants");
+        if (results.rows.length == 0) {
+            res.status(404).json({message: "no account found with this infos", results});
         } else {
-        res.json(results);
+            res.status(200).json( {message: "account found", results});
         }
     } catch (error) {
         console.log(error);
@@ -88,13 +88,12 @@ const getAllUser = async (req, res, next) => {
         const results = await database.query(
             "SELECT * FROM users"
         );
-        res.json(results.rows);
+        res.status(200).json(results.rows);
     } catch (error) {
         console.log(error);
         res.status(500).send(error.message)
     }
 };
-
 
 
 module.exports = {
@@ -103,4 +102,5 @@ module.exports = {
     deleteUser,
     loginUser,
     getAllUser
+    
 };  

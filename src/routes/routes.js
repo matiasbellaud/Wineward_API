@@ -12,7 +12,7 @@ const MapDesignationControllers = require('../controllers/map');
 router.post("/api/createUser", userControllers.createUser);
 router.post("/api/updateUser", userControllers.updateUser);
 router.delete("/api/deleteUser", userControllers.deleteUser);
-router.get("/api/loginUser", userControllers.loginUser);
+router.post("/api/loginUser", userControllers.loginUser);
 
 
 /* Routes BottleSize */
