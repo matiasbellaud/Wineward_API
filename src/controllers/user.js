@@ -10,18 +10,31 @@ const createUser = async (req, res, next) => {
       };
     try {
         const results = await database.query(
-            "INSERT INTO users (lastname, firstname,  email, password) VALUES ($1, $2, $3, $4)",
-            [user.lastname, user.firstname, user.email, user.password]
+        "SELECT user_id FROM users  WHERE email=$1",
+        [user.email]
         );
-        res.json(results);
+        if (results.rows.length != 0) {
+            res.status(404).json({message: "account with this email already exist"});
+        } else {
+            try {
+                const results = await database.query(
+                    "INSERT INTO users (lastname, firstname,  email, password) VALUES ($1, $2, $3, $4)",
+                    [user.lastname, user.firstname, user.email, user.password]
+                );
+                res.status(200).json(results);
+            } catch (error) {
+                console.log(error);
+                res.status(500).json({message: "account not create", results})
+            }
+        }
     } catch (error) {
         console.log(error);
-        res.status(500).send(error.message)
+        res.status(500).send(error);
     }
+    
 };
   
 // Update a user
-  
 const updateUser = async (req, res, next) => {
     const user = {
         lastname: req.body.lastname,
@@ -43,7 +56,7 @@ const updateUser = async (req, res, next) => {
 
 // Delete a user
 const deleteUser = async (req, res, next) => {
-    const accountId = Number(req.params.id);
+    const accountId = Number(req.body.idUser);
 
     if (isNaN(accountId)) {
         return res
@@ -53,10 +66,10 @@ const deleteUser = async (req, res, next) => {
 
     try {
         const [results, fields] = await database.query(
-        "DELETE FROM users WHERE accountId = $1",
+        "DELETE FROM users WHERE user_id = $1",
         [accountId]
         );
-        res.json(results);
+        res.status(200).json(results);
     } catch (error) {
         console.error(error);
         res.status(500).send(error);
@@ -69,14 +82,14 @@ const loginUser = async (req, res, next) => {
         password: req.body.password,
     };
     try {
-        const [results, fields] = await database.query(
+        const results = await database.query(
         "SELECT user_id FROM users  WHERE email=$1 AND password=$2;",
         [user.email, user.password]
         );
-        if (results.length == 0) {
-        res.send("no account at this identifiants");
+        if (results.rows.length == 0) {
+            res.status(404).json({message: "no account found with this infos", results});
         } else {
-        res.json(results);
+            res.status(200).json( {message: "account found", results});
         }
     } catch (error) {
         console.log(error);
@@ -84,11 +97,24 @@ const loginUser = async (req, res, next) => {
     }
 };
 
+const getAllUser = async (req, res, next) => {
+    try {
+        const results = await database.query(
+            "SELECT * FROM users"
+        );
+        res.status(200).json(results.rows);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error.message)
+    }
+};
 
 
 module.exports = {
     createUser,
     updateUser,
     deleteUser,
-    loginUser
+    loginUser,
+    getAllUser
+    
 };  
