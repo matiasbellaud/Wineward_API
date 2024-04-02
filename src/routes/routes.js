@@ -29,7 +29,8 @@ router.post("/api/linkDesignationUser", MapDesignationControllers.linkDesignatio
     // router.post("/api/createDB", databaseControllers.createDatabase);
     // router.delete("/api/deleteDB", databaseControllers.deleteDatabase);
     router.post("/api/insertDesignation", databaseControllers.insertDesignation);
-    router.post("/api/insertBottleSize", databaseControllers.insertBottleSize);
+    router.get("/api/GetAllBottle", databaseControllers.getAllBottleSize);
+    // router.post("/api/insertBottleSize", databaseControllers.insertBottleSize);
 
     /* User */
     router.get("/api/getAllUser", userControllers.getAllUser);

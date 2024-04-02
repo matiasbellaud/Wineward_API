@@ -39,6 +39,18 @@ const insertBottleSize = async (req, res, next) => {
     }
 };
 
+const getAllBottleSize = async (req, res, next) => {
+    try {
+        const results = await database.query(
+            "SELECT * FROM bottle_size ;" 
+        );
+        res.json(results);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error.message)
+    }
+};
+
 const insertDesignation = async (req, res, next) => {
     try {
         const results = await database.query(
@@ -58,5 +70,6 @@ module.exports = {
     createDatabase,
     deleteDatabase,
     insertBottleSize,
-    insertDesignation
+    insertDesignation,
+    getAllBottleSize
 };  

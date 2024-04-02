@@ -17,11 +17,15 @@ const createUser = async (req, res, next) => {
             res.status(404).json({message: "account with this email already exist"});
         } else {
             try {
-                const results = await database.query(
+                const results2 = await database.query(
                     "INSERT INTO users (lastname, firstname,  email, password) VALUES ($1, $2, $3, $4)",
                     [user.lastname, user.firstname, user.email, user.password]
                 );
-                res.status(200).json(results);
+                const results = await database.query(
+                    "SELECT user_id FROM users  WHERE email=$1",
+                    [user.email]
+                );
+                res.status(200).json({results2, results});
             } catch (error) {
                 console.log(error);
                 res.status(500).json({message: "account not create", results})
