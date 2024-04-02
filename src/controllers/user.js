@@ -6,7 +6,7 @@ const createUser = async (req, res, next) => {
         lastname: req.body.lastname,
         firstname: req.body.firstname,
         email: req.body.email,
-        password: req.body.password,
+        password: req.body.hashPassword,
       };
     try {
         const results = await database.query(
@@ -40,7 +40,7 @@ const updateUser = async (req, res, next) => {
         lastname: req.body.lastname,
         firstname: req.body.firstname,
         email: req.body.email,
-        password: req.body.password,
+        password: req.body.hashPassword,
     };
     try {
         const [results, fields] = await database.query(
@@ -79,7 +79,7 @@ const deleteUser = async (req, res, next) => {
 const loginUser = async (req, res, next) => {
     const user = {
         email: req.body.email,
-        password: req.body.password,
+        password: req.body.hashPassword,
     };
     try {
         const results = await database.query(
