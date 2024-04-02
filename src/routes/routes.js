@@ -16,11 +16,11 @@ router.post("/api/loginUser", userControllers.loginUser);
 
 
 /* Routes BottleSize */
-router.get("/api/getBottleUser", bottleControllers.GetBottleSizeUser);
+router.post("/api/getBottleUser", bottleControllers.GetBottleSizeUser);
 router.post("/api/linkBottleUser", bottleControllers.linkBottleUser);
 
 /* Routes Map designation */
-router.get("/api/getDesignationUser", MapDesignationControllers.GetDesignationUser);
+router.post("/api/getDesignationUser", MapDesignationControllers.GetDesignationUser);
 router.post("/api/linkDesignationUser", MapDesignationControllers.linkDesignationUser);
 
 

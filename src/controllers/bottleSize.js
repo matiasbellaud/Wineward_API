@@ -15,7 +15,7 @@ const GetBottleSizeUser = async (req, res, next) => {
             "SELECT * FROM bottle_size_user WHERE user_id = $1",
             [user.idUser] 
         );
-        res.json(results.rows);
+        res.status(200).json({results});
     } catch (error) {
         console.log(error);
         res.status(500).send(error.message)
@@ -37,7 +37,7 @@ const linkBottleUser = async (req, res, next) => {
     try {
         const resultLinkExist = await database.query(
             "SELECT * FROM bottle_size_user WHERE user_id = $1 AND bottle_size_id = $2 ",
-            [user.idUser, user.idBottle] 
+            [link.idUser, link.idBottle] 
         );
 
         if (resultLinkExist.rows.length == 0) {
@@ -54,7 +54,7 @@ const linkBottleUser = async (req, res, next) => {
 
         } else {
             try {
-                const [results, fields] = await database.query(
+                const results = await database.query(
                 "DELETE FROM bottle_size_user WHERE user_id = $1 AND bottle_size_id = $2",
                 [link.idUser, link.idBottle]
                 );
