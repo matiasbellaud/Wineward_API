@@ -2,6 +2,7 @@ const database = require('../../DBConfig')
 
 // Create a user
 const createUser = async (req, res, next) => {
+    console.log("test")
     const user = {
         lastname: req.body.lastname,
         firstname: req.body.firstname,

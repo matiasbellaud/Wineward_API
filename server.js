@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+var cors = require('cors');
 app.use(express.json());
 const router = require("./src/routes/routes");
 
@@ -8,6 +9,7 @@ dotenv.config();
 
 const itemsPool = require('./DBConfig')
 
+app.use(cors());
 app.use("/", router);
 
 app.get('/', (req, res) => {
